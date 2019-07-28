@@ -1,12 +1,12 @@
 {
-  "name": "discord-commander",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@demostanis.worlds/discord-commander",
+  "version": "1.0.1",
+  "description": "Easily make commands for your discord bot",
   "main": "index.lib.js",
   "scripts": {
     "build": "tsc src/index.ts --target es6 --moduleResolution node && babel src/index.js > src/index.lib.js"
   },
-  "keywords": [],
+  "keywords": ["discord", "discord.js", "bot", "commands"],
   "author": "demostanis",
   "license": "MIT",
   "dependencies": {
@@ -18,5 +18,13 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-core": "^6.26.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demostanis-worlds/discord-commander.git"
+  },
+  "bugs": {
+    "url": "https://github.com/demostanis-worlds/discord-commander/issues"
+  },
+  "homepage": "https://github.com/demostanis-worlds/discord-commander#readme"
 }
