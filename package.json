@@ -1,8 +1,8 @@
 {
   "name": "@demostanis.worlds/discord-commander",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Easily make commands for your discord bot",
-  "main": "index.lib.js",
+  "main": "./src/index.lib.js",
   "scripts": {
     "build": "tsc src/index.ts --target es6 --moduleResolution node && babel src/index.js > src/index.lib.js"
   },
