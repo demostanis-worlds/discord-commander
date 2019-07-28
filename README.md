@@ -38,12 +38,12 @@ new DiscordCommander({
 ```js
 import { DiscordCommander } from "discord-commander"
 import Discord from "discord.js"
-
+ 
 const client = new Discord.Client()
-
+ 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
-
+ 
   const commander = new DiscordCommander({
     client: client,
     vipRole: "604250294846750720",
@@ -52,40 +52,40 @@ client.on("ready", () => {
     commands: [{
       name: "*order-pizza",
       description: "Orders pizza.",
-      arguments: [{
+      argumentList: [{
         name: "type",
         description: "Sets the type of the pizza you're ordering.",
         required: true
       }],
-      options: [{
+      optionList: [{
         name: "--cheeze",
         description: "Adds some cheeze to your pizza."
       }, {
         name: "--mushrooms",
         description: "Adds some mushrooms to your pizza.",
         vipOnly: true
-      }]
-    }],
-    does(message, argumentList, optionList) {
-      const type = argumentList.get("type")
-      const cheeze = optionList.get("--cheeze")
-      const mushrooms = optionList.get("--mushrooms")
-
-      message.channel.send(`Ordering ${type} pizza with: `)
-
-      if(cheeze) {
-        msg.channel.send("Some cheeze")
-      }
-
-      if(mushrooms) {
-        msg.channel.send("Some mushrooms")
-      }
-
-      orderPizza(type, cheeze, mushrooms)
-    }
+	  }],
+	  does(message, argumentList, optionList) {
+		const type = argumentList.get("type")
+		const cheeze = optionList.get("--cheeze")
+		const mushrooms = optionList.get("--mushrooms")
+   
+		message.channel.send(`Ordering ${type} pizza with: `)
+   
+		if(cheeze) {
+		  message.channel.send("Some cheeze")
+		}
+   
+		if(mushrooms) {
+		  message.channel.send("Some mushrooms")
+		}
+   
+		orderPizza(type, cheeze, mushrooms)
+	  }
+	}]
   })
 })
-
+ 
 client.login(TOKEN)
 ```
 
