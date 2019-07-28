@@ -1,0 +1,22 @@
+{
+  "name": "discord-commander",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.lib.js",
+  "scripts": {
+    "build": "tsc src/index.ts --target es6 --moduleResolution node && babel src/index.js > src/index.lib.js"
+  },
+  "keywords": [],
+  "author": "demostanis",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-core": "^6.26.3"
+  }
+}
