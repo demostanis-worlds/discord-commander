@@ -17,6 +17,14 @@ class DiscordCommander {
             msg.reply(this.config.vipOnlyMessage);
             return;
         }
+        if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
+            setTimeout(() => command.inTimeout = false, command.timeout);
+            msg.channel.send(this.config.timeoutMessage);
+            return;
+        }
+        else if (command.timeout) {
+            command.inTimeout = true;
+        }
         let c = true;
         parts.forEach((part, i) => {
             for (let opt in command.optionList) {

@@ -46,6 +46,16 @@ function () {
         return;
       }
 
+      if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
+        setTimeout(function () {
+          return command.inTimeout = false;
+        }, command.timeout);
+        msg.channel.send(this.config.timeoutMessage);
+        return;
+      } else if (command.timeout) {
+        command.inTimeout = true;
+      }
+
       var c = true;
       parts.forEach(function (part, i) {
         for (var opt in command.optionList) {
