@@ -20,7 +20,9 @@ interface Command {
 	argumentList: any[],
 	optionList: any[],
 	vipOnly?: true|false,
-	does: (message?: Discord.Message, commandArguments?: Argument[], commandOptions?: Option[]) => void
+	does: (message?: Discord.Message, commandArguments?: Argument[], commandOptions?: Option[]) => void,
+	timeout: number,
+	inTimeout: true|false
 }
 
 interface Config {
@@ -28,7 +30,8 @@ interface Config {
 	vipRole?: string|false,
 	vipOnlyMessage?: string,
 	argumentRequiredMessage: string,
-	commands: Command[]
+	commands: Command[],
+	timeoutMessage: string
 }
 
 class DiscordCommander {
@@ -53,6 +56,13 @@ class DiscordCommander {
 		if (command.vipOnly && this.config.vipRole && msg.member && !msg.member.roles.has(this.config.vipRole)) {
 			msg.reply(this.config.vipOnlyMessage)
 			return
+		}
+
+		if (command.timeout && command.inTimeout) {
+			setTimeout(() => command.inTimeout = false)
+			msg.channel.send(this.config.timeoutMessage)
+		} else if(command.timeout) {
+			command.inTimeout = true
 		}
 
 		let c = true

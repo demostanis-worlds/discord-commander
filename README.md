@@ -30,7 +30,8 @@ new DiscordCommander({
   vipRole?: string|false,
   vipOnlyMessage?: string,
   argumentRequiredMessage: string,
-  commands: DiscordCommander.Command[]
+  commands: DiscordCommander.Command[],
+  timeoutMessage: string
 })
 ```
 
@@ -48,10 +49,12 @@ client.on("ready", () => {
     client: client,
     vipRole: "604250294846750720",
     vipOnlyMessage: "Sorry! This command is only available for VIPs.",
-    argumentRequiredMessage: "It seems that you forgot an argument which is required...",
+	argumentRequiredMessage: "It seems that you forgot an argument which is required...",
+	timeoutMessage: "Please slow down...",
     commands: [{
       name: "*order-pizza",
-      description: "Orders pizza.",
+	  description: "Orders pizza.",
+	  timeout: 1000,
       argumentList: [{
         name: "type",
         description: "Sets the type of the pizza you're ordering.",
