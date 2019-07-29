@@ -3,7 +3,7 @@
 
 ## Install
 ```sh
-npm install --save discord-commander
+npm install --save @demostanis.worlds/@demostanis.worlds/discord-commander
 ```
 
 ## Import
@@ -12,14 +12,14 @@ npm install --save discord-commander
  * ES6
  */
 
-import { DiscordCommander } from "discord-commander"
+import { DiscordCommander } from "@demostanis.worlds/discord-commander"
 import Discord from "discord.js"
 
 /**
  * CommonJS
  */
 
-const { DiscordCommander } = require("discord-commander")
+const { DiscordCommander } = require("@demostanis.worlds/discord-commander")
 const Discord = require("discord.js")
 ```
 
@@ -36,7 +36,7 @@ new DiscordCommander({
 
 ## Examples
 ```js
-import { DiscordCommander } from "discord-commander"
+import { DiscordCommander } from "@demostanis.worlds/discord-commander"
 import Discord from "discord.js"
  
 const client = new Discord.Client()
@@ -58,8 +58,8 @@ client.on("ready", () => {
         required: true
       }],
       optionList: [{
-        name: "--cheeze",
-        description: "Adds some cheeze to your pizza."
+        name: "--cheese",
+        description: "Adds some cheese to your pizza."
       }, {
         name: "--mushrooms",
         description: "Adds some mushrooms to your pizza.",
@@ -67,20 +67,20 @@ client.on("ready", () => {
 	  }],
 	  does(message, argumentList, optionList) {
 		const type = argumentList.get("type")
-		const cheeze = optionList.get("--cheeze")
+		const cheese = optionList.get("--cheese")
 		const mushrooms = optionList.get("--mushrooms")
    
 		message.channel.send(`Ordering ${type} pizza with: `)
    
-		if(cheeze) {
-		  message.channel.send("Some cheeze")
+		if(cheese) {
+		  message.channel.send("Some cheese")
 		}
    
 		if(mushrooms) {
 		  message.channel.send("Some mushrooms")
 		}
    
-		orderPizza(type, cheeze, mushrooms)
+		orderPizza(type, cheese, mushrooms)
 	  }
 	}]
   })
@@ -90,4 +90,4 @@ client.login(TOKEN)
 ```
 
 ## Issues
-- For any issue, please tell them [here](https://github.com/demostanis-worlds/discord-commander/issues).
+- For any issue, please tell them [here](https://github.com/demostanis-worlds/@demostanis.worlds/discord-commander/issues).
