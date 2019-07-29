@@ -59,8 +59,9 @@ class DiscordCommander {
 		}
 
 		if (command.timeout && command.inTimeout) {
-			setTimeout(() => command.inTimeout = false)
+			setTimeout(() => command.inTimeout = false, command.timeout)
 			msg.channel.send(this.config.timeoutMessage)
+			return
 		} else if(command.timeout) {
 			command.inTimeout = true
 		}
