@@ -3,7 +3,7 @@
 
 ## Install
 ```sh
-npm install --save @demostanis.worlds/@demostanis.worlds/discord-commander
+npm install --save @demostanis.worlds/discord-commander
 ```
 
 ## Import
