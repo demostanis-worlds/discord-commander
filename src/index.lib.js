@@ -23,7 +23,11 @@ function () {
 
     this.config = config;
     this.config.client.on("message", function (msg) {
+      if (_this.config.disableDMs) return;
       !msg.author.bot && _this.exec(msg);
+    });
+    this.config.commands.forEach(function (cmd) {
+      return cmd.inTimeout = false;
     });
   }
 
@@ -47,13 +51,13 @@ function () {
       }
 
       if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
-        setTimeout(function () {
-          return command.inTimeout = false;
-        }, command.timeout);
         msg.channel.send(this.config.timeoutMessage);
         return;
       } else if (command.timeout) {
         command.inTimeout = true;
+        setTimeout(function () {
+          return command.inTimeout = false;
+        }, command.timeout);
       }
 
       var c = true;

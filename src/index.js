@@ -2,8 +2,11 @@ class DiscordCommander {
     constructor(config) {
         this.config = config;
         this.config.client.on("message", (msg) => {
+            if (this.config.disableDMs)
+                return;
             !msg.author.bot && this.exec(msg);
         });
+        this.config.commands.forEach(cmd => cmd.inTimeout = false);
     }
     exec(msg) {
         const message = msg.content.replace(/\s+/g, " ");
@@ -18,12 +21,12 @@ class DiscordCommander {
             return;
         }
         if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
-            setTimeout(() => command.inTimeout = false, command.timeout);
             msg.channel.send(this.config.timeoutMessage);
             return;
         }
         else if (command.timeout) {
             command.inTimeout = true;
+            setTimeout(() => command.inTimeout = false, command.timeout);
         }
         let c = true;
         parts.forEach((part, i) => {
