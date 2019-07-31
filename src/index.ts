@@ -31,7 +31,8 @@ interface Config {
 	vipOnlyMessage?: string,
 	argumentRequiredMessage: string,
 	commands: Command[],
-	timeoutMessage: string
+	timeoutMessage: string,
+	disableDMs: true|false
 }
 
 class DiscordCommander {
@@ -41,6 +42,7 @@ class DiscordCommander {
 		this.config = config
 
 		this.config.client.on("message", (msg: Discord.Message) => {
+			if(this.config.disableDMs) return
 			!msg.author.bot && this.exec(msg)
 		})
 
