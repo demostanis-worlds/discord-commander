@@ -42,7 +42,8 @@ class DiscordCommander {
 		this.config = config
 
 		this.config.client.on("message", (msg: Discord.Message) => {
-			if(this.config.disableDMs) return
+			if(this.config.disableDMs && msg.channel instanceof Discord.DMChannel) return
+			
 			!msg.author.bot && this.exec(msg)
 		})
 

@@ -1,8 +1,9 @@
+import * as Discord from "discord.js";
 class DiscordCommander {
     constructor(config) {
         this.config = config;
         this.config.client.on("message", (msg) => {
-            if (this.config.disableDMs)
+            if (this.config.disableDMs && msg.channel instanceof Discord.DMChannel)
                 return;
             !msg.author.bot && this.exec(msg);
         });
