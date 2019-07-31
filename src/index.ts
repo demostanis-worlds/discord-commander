@@ -43,6 +43,8 @@ class DiscordCommander {
 		this.config.client.on("message", (msg: Discord.Message) => {
 			!msg.author.bot && this.exec(msg)
 		})
+
+		this.config.commands.forEach(cmd => cmd.inTimeout = false)
 	}
 
 	exec(msg: Discord.Message) {
@@ -59,11 +61,11 @@ class DiscordCommander {
 		}
 
 		if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
-			setTimeout(() => command.inTimeout = false, command.timeout)
 			msg.channel.send(this.config.timeoutMessage)
 			return
 		} else if(command.timeout) {
 			command.inTimeout = true
+			setTimeout(() => command.inTimeout = false, command.timeout)
 		}
 
 		let c = true
