@@ -50,12 +50,12 @@ function () {
       if (!command) return;
 
       if (command.vipOnly && this.config.vipRole && msg.member && !msg.member.roles.has(this.config.vipRole)) {
-        msg.reply(this.config.vipOnlyMessage);
+        msg.reply(typeof this.config.vipOnlyMessage === "function" ? this.config.vipOnlyMessage(command) : this.config.vipOnlyMessage);
         return;
       }
 
       if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
-        msg.channel.send(this.config.timeoutMessage);
+        msg.channel.send(typeof this.config.timeoutMessage === "function" ? this.config.timeoutMessage(command.timeout) : this.config.timeoutMessage);
         return;
       } else if (command.timeout) {
         command.inTimeout = true;
@@ -70,28 +70,62 @@ function () {
           if (command.optionList[opt].name === part) {
             if (_this2.config.vipRole) {
               if (command.optionList[opt].vipOnly && msg.member && !msg.member.roles.has(_this2.config.vipRole)) {
-                msg.reply(_this2.config.vipOnlyMessage);
+                msg.reply(typeof _this2.config.vipOnlyMessage === "function" ? _this2.config.vipOnlyMessage(command.optionList[opt]) : _this2.config.vipOnlyMessage);
                 return c = false;
               }
             }
 
+            var optVal = "";
+
+            var _loop = function _loop(j) {
+              if (!command.optionList.find(function (_ref) {
+                var name = _ref.name;
+                return name === parts[j];
+              })) {
+                optVal += "".concat(parts[j], " ");
+              }
+            };
+
+            for (var j = i + 1; j < parts.length; j++) {
+              _loop(j);
+            }
+
             optionList.push({
               name: command.optionList[opt].name,
-              value: parts[i + 1] || true,
+              value: optVal || true,
               rawOption: command.optionList[opt]
             });
           }
         }
       });
-      parts.forEach(function (part) {
-        if (part !== parts[0] && !optionList.find(function (_ref) {
-          var name = _ref.name;
+      parts.forEach(function (part, i) {
+        if (part !== parts[0] && !optionList.find(function (_ref2) {
+          var name = _ref2.name;
           return name === part;
         })) {
           if (!command.argumentList[argumentList.length]) return;
+          var argVal = "";
+
+          var _loop2 = function _loop2(j) {
+            if (!command.optionList.find(function (_ref3) {
+              var name = _ref3.name;
+              return name === parts[j];
+            })) {
+              argVal += "".concat(parts[j], " ");
+            } else {
+              return "break";
+            }
+          };
+
+          for (var j = i; j < parts.length; j++) {
+            var _ret = _loop2(j);
+
+            if (_ret === "break") break;
+          }
+
           argumentList.push({
             name: command.argumentList[argumentList.length].name,
-            value: part,
+            value: argVal,
             rawArgument: command.argumentList[argumentList.length]
           });
         }
@@ -101,14 +135,14 @@ function () {
       var _iteratorError = undefined;
 
       try {
-        var _loop = function _loop() {
+        var _loop3 = function _loop3() {
           var arg = _step.value;
 
-          if (arg.required && !argumentList.find(function (_ref4) {
-            var name = _ref4.name;
+          if (arg.required && !argumentList.find(function (_ref6) {
+            var name = _ref6.name;
             return name === arg.name;
           })) {
-            msg.reply(_this2.config.argumentRequiredMessage);
+            msg.reply(typeof _this2.config.argumentRequiredMessage === "function" ? _this2.config.argumentRequiredMessage(arg) : _this2.config.argumentRequiredMessage);
             return {
               v: void 0
             };
@@ -116,9 +150,9 @@ function () {
         };
 
         for (var _iterator = command.argumentList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _ret = _loop();
+          var _ret2 = _loop3();
 
-          if (_typeof(_ret) === "object") return _ret.v;
+          if (_typeof(_ret2) === "object") return _ret2.v;
         }
       } catch (err) {
         _didIteratorError = true;
@@ -137,8 +171,8 @@ function () {
 
       Object.assign(argumentList, {
         get: function get(e) {
-          var arg = this.find(function (_ref2) {
-            var name = _ref2.name;
+          var arg = this.find(function (_ref4) {
+            var name = _ref4.name;
             return name === e;
           });
           return arg ? arg.value : undefined;
@@ -146,8 +180,8 @@ function () {
       });
       Object.assign(optionList, {
         get: function get(e) {
-          var opt = this.find(function (_ref3) {
-            var name = _ref3.name;
+          var opt = this.find(function (_ref5) {
+            var name = _ref5.name;
             return name === e;
           });
           return opt ? opt.value : undefined;

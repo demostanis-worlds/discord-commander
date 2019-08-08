@@ -28,10 +28,10 @@ interface Command {
 interface Config {
 	client: Discord.Client,
 	vipRole?: string|false,
-	vipOnlyMessage?: string,
-	argumentRequiredMessage: string,
+	vipOnlyMessage?: string|Function,
+	argumentRequiredMessage: string|Function,
 	commands: Command[],
-	timeoutMessage: string,
+	timeoutMessage: string|Function,
 	disableDMs: true|false
 }
 
@@ -59,12 +59,12 @@ class DiscordCommander {
 
 		if(!command) return
 		if (command.vipOnly && this.config.vipRole && msg.member && !msg.member.roles.has(this.config.vipRole)) {
-			msg.reply(this.config.vipOnlyMessage)
+			msg.reply(typeof this.config.vipOnlyMessage === "function" ? this.config.vipOnlyMessage(command) : this.config.vipOnlyMessage)
 			return
 		}
 
 		if (command.timeout && command.inTimeout && msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) {
-			msg.channel.send(this.config.timeoutMessage)
+			msg.channel.send(typeof this.config.timeoutMessage === "function" ? this.config.timeoutMessage(command.timeout) : this.config.timeoutMessage)
 			return
 		} else if(command.timeout) {
 			command.inTimeout = true
@@ -72,33 +72,48 @@ class DiscordCommander {
 		}
 
 		let c = true
-
 		parts.forEach((part: string, i: number) => {
 			for (let opt in command.optionList) {
 				if (command.optionList[opt].name === part) {
 					if(this.config.vipRole) {
 						if(command.optionList[opt].vipOnly && msg.member && !msg.member.roles.has(this.config.vipRole)) {
-							msg.reply(this.config.vipOnlyMessage)
+							msg.reply(typeof this.config.vipOnlyMessage === "function" ? this.config.vipOnlyMessage(command.optionList[opt]) : this.config.vipOnlyMessage)
 							return c = false
+						}
+					}
+
+					let optVal = ""
+					for(let j = i + 1; j < parts.length; j++) {
+						if(!(command.optionList.find(({ name }) => name === parts[j]))) {
+							optVal += `${parts[j]} `
 						}
 					}
 
 					optionList.push({
 						name: command.optionList[opt].name,
-						value: parts[i + 1] || true,
+						value: optVal || true,
 						rawOption: command.optionList[opt]
 					})
 				}
 			}
 		})
 
-		parts.forEach(part => {
+		parts.forEach((part: string, i: number) => {
 			if (part !== parts[0] && !optionList.find(({ name }) => name === part)) {
 				if (!command.argumentList[argumentList.length]) return
 
+				let argVal = ""
+				for(let j = i; j < parts.length; j++) {
+					if(!(command.optionList.find(({ name }) =>  name === parts[j]))) {
+						argVal += `${parts[j]} `
+					} else {
+						break
+					}
+				}
+
 				argumentList.push({
 					name: command.argumentList[argumentList.length].name,
-					value: part,
+					value: argVal,
 					rawArgument: command.argumentList[argumentList.length]
 				})
 			}
@@ -106,7 +121,7 @@ class DiscordCommander {
 
 		for(const arg of command.argumentList) {
 			if(arg.required && !argumentList.find(({ name }) => name === arg.name)) {
-				msg.reply(this.config.argumentRequiredMessage)
+				msg.reply(typeof this.config.argumentRequiredMessage === "function" ? this.config.argumentRequiredMessage(arg) : this.config.argumentRequiredMessage)
 				return
 			}
 		}
