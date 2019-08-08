@@ -28,10 +28,11 @@ const Discord = require("discord.js")
 new DiscordCommander({
   client: Discord.Client,
   vipRole?: string|false,
-  vipOnlyMessage?: string,
-  argumentRequiredMessage: string,
-  commands: DiscordCommander.Command[],
-  timeoutMessage: string
+  vipOnlyMessage?: string|Function,
+  argumentRequiredMessage: string|Function,
+  commands: Command[],
+  timeoutMessage: string|Function,
+  disableDMs: true|false
 })
 ```
 
@@ -76,14 +77,22 @@ client.on("ready", () => {
 		message.channel.send(`Ordering ${type} pizza with: `)
    
 		if(cheese) {
-		  message.channel.send("Some cheese")
+		  message.channel.send("- Some cheese")
 		}
    
 		if(mushrooms) {
-		  message.channel.send("Some mushrooms")
+		  message.channel.send("- Some mushrooms")
 		}
    
 		orderPizza(type, cheese, mushrooms)
+
+		/**
+		 * *order-pizza Classic pizza --cheese --mushrooms
+		 * 
+		 * Ordering Classic pizza with:
+		 *  - Some cheese
+		 *  - Some mushrooms
+		 */
 	  }
 	}]
   })
