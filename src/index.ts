@@ -64,8 +64,6 @@ class DiscordCommander {
 		}
 
 		if (command.timeout && command.inTimeout) {
-			if(msg.member && this.config.vipRole && !msg.member.roles.has(this.config.vipRole)) return
-
 			msg.channel.send(typeof this.config.timeoutMessage === "function" ? this.config.timeoutMessage(command.timeout) : this.config.timeoutMessage)
 			return
 		} else if(command.timeout) {
