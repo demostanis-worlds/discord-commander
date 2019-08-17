@@ -117,7 +117,7 @@ function () {
             }
           };
 
-          for (var j = i; j < parts.length; j++) {
+          for (var j = i; j < command.argumentList[argumentList.length].length || 1; j++) {
             var _ret = _loop2(j);
 
             if (_ret === "break") break;

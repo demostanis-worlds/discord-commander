@@ -1,6 +1,6 @@
 {
   "name": "@demostanis.worlds/discord-commander",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Easily make commands for your discord bot",
   "main": "./src/index.lib.js",
   "scripts": {

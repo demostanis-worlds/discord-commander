@@ -59,7 +59,8 @@ client.on("ready", () => {
       argumentList: [{
         name: "type",
         description: "Sets the type of the pizza you're ordering.",
-        required: true
+		required: true,
+		length: 2
       }],
       optionList: [{
         name: "--cheese",

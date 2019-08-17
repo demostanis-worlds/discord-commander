@@ -4,7 +4,8 @@ interface Argument {
 	name: string,
 	value: string|boolean,
 	rawArgument: object[],
-	required?: true|false
+	required?: true|false,
+	length: number
 }
 
 interface Option {
@@ -103,7 +104,7 @@ class DiscordCommander {
 				if (!command.argumentList[argumentList.length]) return
 
 				let argVal = ""
-				for(let j = i; j < parts.length; j++) {
+				for(let j = i; j < command.argumentList[argumentList.length].length || 1; j++) {
 					if(!(command.optionList.find(({ name }) =>  name === parts[j]))) {
 						argVal += `${parts[j]} `
 					} else {
